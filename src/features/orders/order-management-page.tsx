@@ -241,12 +241,13 @@ export default function OrderManagementPage({ rolePath }: OrderManagementPagePro
       </Space>
 
       <Table
-        rowKey="id"
-        loading={isLoading}
-        dataSource={data?.data ?? []}
         columns={columns}
-        pagination={{ pageSize: 10 }}
-      />
-    </div>
+        dataSource={data?.data ?? []}
+        rowKey="id"
+  locale={{
+    emptyText: isLoading ? 'Đang tải dữ liệu...' : 'Không có dữ liệu'
+  }}
+/>  
+    </div>  
   )
 }
