@@ -7,6 +7,10 @@ import dayjs from 'dayjs'
 import FilterBox from '@/components/admin/filter-box'
 import { getEmployeeOrders, type OrderFilterParams } from '@/services/employee.service'
 
+const formatCurrency = (value?: number) => {
+  if (value === null || value === undefined) return '0 đ'
+  return value.toLocaleString('vi-VN') + ' đ'
+}
 const STATUS_LABELS: Record<number, { label: string; color: string }> = {
   0: { label: 'Chờ xác nhận', color: 'gold' },
   1: { label: 'Đã xác nhận', color: 'blue' },
@@ -110,7 +114,7 @@ export default function OrderManagementPage({ rolePath }: OrderManagementPagePro
       title: 'Tổng tiền',
       dataIndex: 'total',
       key: 'total',
-      render: (v: number) => v.toLocaleString('vi-VN') + ' đ',
+      render: (v: number) => formatCurrency(v),
     },
     {
       title: 'Trạng thái',
@@ -237,12 +241,13 @@ export default function OrderManagementPage({ rolePath }: OrderManagementPagePro
       </Space>
 
       <Table
-        rowKey="id"
-        loading={isLoading}
-        dataSource={data?.data ?? []}
         columns={columns}
-        pagination={{ pageSize: 10 }}
-      />
-    </div>
+        dataSource={data?.data ?? []}
+        rowKey="id"
+  locale={{
+    emptyText: isLoading ? 'Đang tải dữ liệu...' : 'Không có dữ liệu'
+  }}
+/>  
+    </div>  
   )
 }

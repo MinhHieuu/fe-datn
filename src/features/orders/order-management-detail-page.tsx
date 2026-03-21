@@ -9,12 +9,16 @@ import { getProductDetailById } from '@/services/product.service'
 import type { ProductDetailResponse } from '@/types'
 import { resolveImageUrl } from '@/utils/image-url'
 
+
+const formatCurrency = (value?: number) => {
+  if (!value) return '0 đ'
+  return value.toLocaleString('vi-VN') + ' đ'
+}
 const STATUS_LABELS: Record<number, { label: string; color: string }> = {
-  0: { label: 'Chờ xác nhận', color: 'gold' },
-  1: { label: 'Đã xác nhận', color: 'blue' },
-  2: { label: 'Đang giao hàng', color: 'cyan' },
-  3: { label: 'Đã hủy', color: 'red' },
-  4: { label: 'Đơn bị hoàn', color: 'volcano' },
+  1: { label: 'Chờ xác nhận', color: 'orange' },
+  2: { label: 'Đang xử lý', color: 'blue' },
+  3: { label: 'Đang giao', color: 'purple' },
+  4: { label: 'Đã giao', color: 'cyan' },
   5: { label: 'Hoàn thành', color: 'green' },
 }
 
@@ -152,7 +156,7 @@ export default function OrderManagementDetailPage({ rolePath }: OrderManagementD
               <Descriptions.Item label="Tạm tính">{order.subTotal.toLocaleString('vi-VN')} đ</Descriptions.Item>
               <Descriptions.Item label="Giảm giá">{order.discount.toLocaleString('vi-VN')} đ</Descriptions.Item>
               <Descriptions.Item label="Phí ship">{(order.shippingFee ?? 0).toLocaleString('vi-VN')} đ</Descriptions.Item>
-              <Descriptions.Item label="Tổng thanh toán">{order.total.toLocaleString('vi-VN')} đ</Descriptions.Item>
+              <Descriptions.Item label="Tổng thanh toán">{formatCurrency(order.total)} đ</Descriptions.Item>
             </Descriptions>
 
             {!isTerminal && (
