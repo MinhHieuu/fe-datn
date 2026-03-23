@@ -1,0 +1,67 @@
+.orders-container {
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* filter */
+.filter-card input {
+  padding: 8px;
+  width: 250px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+/* table */
+.table-card table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-card th, .table-card td {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.table-card tr:hover {
+  background: #f9f9f9;
+}
+
+/* button */
+.btn {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 6px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.btn.view {
+  background: #3498db;
+  color: white;
+}
+
+.btn.next {
+  background: #2ecc71;
+  color: white;
+}
+
+/* status */
+.status {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.s0 { background: #f1c40f; }
+.s1 { background: #3498db; color: white; }
+.s2 { background: #9b59b6; color: white; }
+.s3 { background: #2ecc71; color: white; }
+.s4 { background: #e74c3c; color: white; }
