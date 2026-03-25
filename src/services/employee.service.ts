@@ -1,23 +1,28 @@
-import axios from "axios";
+import axios from "@/utils/axios";
 
-const API = "http://localhost:8080/api/employees";
+const BASE_URL = "/employees";
 
-export const getEmployees = () => {
-  return axios.get(API);
+export const getEmployees = async () => {
+  const res = await axios.get(BASE_URL);
+  return res.data;
 };
 
-export const getEmployeeById = (id: string) => {
-  return axios.get(`${API}/${id}`);
+export const getEmployeeById = async (id: string) => {
+  const res = await axios.get(`${BASE_URL}/${id}`);
+  return res.data;
 };
 
-export const createEmployee = (data: any) => {
-  return axios.post(API, data);
+export const createEmployee = async (data: any) => {
+  const res = await axios.post(BASE_URL, data);
+  return res.data;
 };
 
-export const updateEmployee = (id: string, data: any) => {
-  return axios.put(`${API}/${id}`, data);
+export const updateEmployee = async (id: string, data: any) => {
+  const res = await axios.put(`${BASE_URL}/${id}`, data);
+  return res.data;
 };
 
-export const deleteEmployee = (id: string) => {
-  return axios.delete(`${API}/${id}`);
+export const deleteEmployee = async (id: string) => {
+  const res = await axios.delete(`${BASE_URL}/${id}`);
+  return res.data;
 };
