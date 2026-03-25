@@ -29,3 +29,20 @@ export const deleteCart = async (id: string) => {
 export const checkoutCart = async (customerId: string) => {
   return await axios.put(`/api/order/checkout/${customerId}`);
 };
+
+
+const API = "http://localhost:8080/api/orders";
+
+export const getOrders = () => axios.get(API);
+
+export const filterOrders = (params: any) =>
+  axios.get(`${API}/filter`, { params });
+
+export const getRevenue = (params: any) =>
+  axios.get(`${API}/revenue`, { params });
+
+export const getBestSelling = (params: any) =>
+  axios.get(`${API}/best-selling`, { params });
+
+export const getTotalOrders = (params: any) =>
+  axios.get(`${API}/total`, { params });

@@ -1,110 +1,75 @@
+import { Table, DatePicker, Select, Row, Col } from "antd";
 import { useEffect, useState } from "react";
-import axios from "axios";
-import "./orders-page.css";
+import { filterOrders } from "../api/orderApi";
 
-interface Order {
-  id: string;
-  code: string;
-  customerName: string;
-  phone: string;
-  total: number;
-  status: number;
-  createdAt: string;
-}
+const { RangePicker } = DatePicker;
 
-const OrdersPage = () => {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [keyword, setKeyword] = useState("");
+export default function OrderPage() {
+  const [data, setData] = useState([]);
 
-  const fetchOrders = () => {
-    axios.get("http://localhost:8080/api/order")
-      .then(res => setOrders(res.data));
+  const fetchData = async (params = {}) => {
+    const res = await filterOrders(params);
+    setData(res.data);
   };
 
   useEffect(() => {
-    fetchOrders();
+    fetchData();
   }, []);
 
-  const changeStatus = (id: string, status: number) => {
-    if (!window.confirm("Xác nhận đổi trạng thái?")) return;
-
-    axios.put(`http://localhost:8080/api/order/status/${id}`, { status })
-      .then(() => {
-        fetchOrders();
-      });
-  };
-
-  const getStatusText = (s: number) => {
-    return ["Chờ", "Xác nhận", "Đang giao", "Hoàn thành", "Hủy"][s];
-  };
+  const columns = [
+    {
+      title: "Mã",
+      dataIndex: "code",
+    },
+    {
+      title: "Ngày",
+      dataIndex: "createdAt",
+    },
+    {
+      title: "Tổng tiền",
+      dataIndex: "totalMoney",
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "status",
+    },
+  ];
 
   return (
-    <div className="orders-container">
-      <h2>Quản lý hóa đơn</h2>
+    <div style={{ padding: 20 }}>
+      <Row gutter={16}>
+        <Col>
+          <Select
+            placeholder="Trạng thái"
+            style={{ width: 150 }}
+            onChange={(value) => fetchData({ status: value })}
+            allowClear
+          >
+            <Select.Option value={1}>Chờ</Select.Option>
+            <Select.Option value={5}>Hoàn thành</Select.Option>
+          </Select>
+        </Col>
 
-      {/* FILTER CARD */}
-      <div className="card filter-card">
-        <input
-          placeholder="Tìm mã hóa đơn..."
-          onChange={(e) => setKeyword(e.target.value)}
-        />
-      </div>
+        <Col>
+          <RangePicker
+            onChange={(dates) => {
+              if (dates) {
+                fetchData({
+                  fromDate: dates[0].format("YYYY-MM-DD"),
+                  toDate: dates[1].format("YYYY-MM-DD"),
+                });
+              }
+            }}
+          />
+        </Col>
+      </Row>
 
-      {/* TABLE CARD */}
-      <div className="card table-card">
-        <table>
-          <thead>
-            <tr>
-              <th>Mã</th>
-              <th>Khách</th>
-              <th>SĐT</th>
-              <th>Tổng tiền</th>
-              <th>Trạng thái</th>
-              <th>Ngày</th>
-              <th></th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {orders
-              .filter(o => o.code.includes(keyword))
-              .map(o => (
-                <tr key={o.id}>
-                  <td>{o.code}</td>
-                  <td>{o.customerName}</td>
-                  <td>{o.phone}</td>
-                  <td>{o.total.toLocaleString()}đ</td>
-
-                  <td>
-                    <span className={`status s${o.status}`}>
-                      {getStatusText(o.status)}
-                    </span>
-                  </td>
-
-                  <td>{o.createdAt}</td>
-
-                  <td>
-                    <button className="btn view"
-                      onClick={() => window.location.href = `/admin/order-detail/${o.id}`}>
-                      Xem
-                    </button>
-
-                    {o.status < 3 && (
-                      <button
-                        className="btn next"
-                        onClick={() => changeStatus(o.id, o.status + 1)}
-                      >
-                        Next
-                      </button>
-                    )}
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </table>
-      </div>
+      <Table
+        columns={columns}
+        dataSource={data}
+        rowKey="id"
+        style={{ marginTop: 20 }}
+      />
     </div>
   );
-};
-
-export default OrdersPage;
+}
