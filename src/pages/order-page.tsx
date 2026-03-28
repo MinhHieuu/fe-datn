@@ -71,6 +71,7 @@ export default function OrdersPage() {
             const res = await getOrderById(record.id);
             setDetail(res.data);
           }}
+          
         >
           Xem
         </Button>
