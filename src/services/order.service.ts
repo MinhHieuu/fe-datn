@@ -46,3 +46,9 @@ export const getBestSelling = (params: any) =>
 
 export const getTotalOrders = (params: any) =>
   axios.get(`${API}/total`, { params });
+
+export const getOrderById = (id: string) =>
+  axios.get(`${API}/${id}`);
+
+export const updateOrderStatus = (id: string, status: number) =>
+  axios.put(`${API}/${id}/status`, { status });     
